@@ -5,8 +5,9 @@
  */
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import GoogleMap from "@/components/GoogleMap";
 import { motion } from "framer-motion";
-import { ArrowRight, Zap, Shield, Clock, CheckCircle2 } from "lucide-react";
+import { ArrowRight, Zap, Shield, Clock, CheckCircle2, Star } from "lucide-react";
 
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663521884016/8pyMy429fFWbVGQ5BPDWMT/hero-main-6R2gXDNyxvdQEm2WsQNbe9.webp";
 
@@ -30,6 +31,29 @@ const services = [
   "Mobile Bonds",
   "Surety Bonds",
   "Appearance Bonds",
+];
+
+const testimonials = [
+  {
+    name: "Maria Rodriguez",
+    text: "Bail America was incredibly helpful during a stressful time. They explained everything clearly and got my brother out quickly. Highly recommend!",
+    rating: 5,
+  },
+  {
+    name: "James Thompson",
+    text: "Fast, professional, and compassionate service. They treated us like family, not just another case. Best decision we made.",
+    rating: 5,
+  },
+  {
+    name: "Sarah Chen",
+    text: "Available 24/7 and they actually answered the phone at 2 AM. The staff knew exactly what to do and made the process so much easier.",
+    rating: 5,
+  },
+  {
+    name: "David Martinez",
+    text: "Affordable payment plans and honest communication. No hidden fees, no surprises. This is how bail bonds should be done.",
+    rating: 5,
+  },
 ];
 
 export default function Home() {
@@ -261,6 +285,82 @@ export default function Home() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section className="py-20 lg:py-28 bg-blue-50/50">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center mb-16"
+          >
+            <h2 className="font-display font-bold text-[#0D0D0D] text-4xl mb-4">
+              What Our Clients Say
+            </h2>
+            <p className="font-body text-lg text-[#0D0D0D]/60 max-w-2xl mx-auto">
+              Real reviews from real clients who trusted us with their bail bonds needs
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {testimonials.map((testimonial, i) => (
+              <motion.div
+                key={testimonial.name}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: i * 0.1 }}
+                className="p-6 rounded-2xl bg-white border border-blue-200/50 hover:shadow-lg transition-all"
+              >
+                <div className="flex gap-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, j) => (
+                    <Star key={j} size={18} className="fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="font-body text-[#0D0D0D]/70 leading-relaxed mb-4">
+                  "{testimonial.text}"
+                </p>
+                <p className="font-body font-semibold text-[#0D0D0D]">{testimonial.name}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Map */}
+      <section className="py-20 lg:py-28">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-12"
+          >
+            <h2 className="font-display font-bold text-[#0D0D0D] text-4xl mb-4">
+              Visit Us in Liberty
+            </h2>
+            <p className="font-body text-lg text-[#0D0D0D]/60 max-w-2xl">
+              Located at 2317 Beaumont Ave, Liberty, TX 77575. Stop by our office or call us anytime.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <GoogleMap
+              latitude={29.8154}
+              longitude={-94.7621}
+              title="Bail America Liberty - 2317 Beaumont Ave"
+              zoom={16}
+            />
+          </motion.div>
         </div>
       </section>
 

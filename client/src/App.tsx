@@ -9,6 +9,7 @@ import About from "./pages/About";
 import Services from "./pages/Services";
 import HowItWorks from "./pages/HowItWorks";
 import Contact from "./pages/Contact";
+import FAQ from "./pages/FAQ";
 
 
 function Router() {
@@ -19,6 +20,7 @@ function Router() {
       <Route path={"/services"} component={Services} />
       <Route path={"/how-it-works"} component={HowItWorks} />
       <Route path={"/contact"} component={Contact} />
+      <Route path={"/faq"} component={FAQ} />
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}
       <Route component={NotFound} />

@@ -5,6 +5,7 @@
  */
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import GoogleMap from "@/components/GoogleMap";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, MessageSquare } from "lucide-react";
 
@@ -200,6 +201,39 @@ export default function Contact() {
               </motion.div>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* Map */}
+      <section className="py-20 lg:py-28">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-12"
+          >
+            <h2 className="font-display font-bold text-[#0D0D0D] text-4xl mb-4">
+              Our Location
+            </h2>
+            <p className="font-body text-lg text-[#0D0D0D]/60 max-w-2xl">
+              Visit us at our Liberty office. We're open 24/7 to serve you.
+            </p>
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <GoogleMap
+              latitude={29.8154}
+              longitude={-94.7621}
+              title="Bail America Liberty - 2317 Beaumont Ave"
+              zoom={16}
+            />
+          </motion.div>
         </div>
       </section>
 
