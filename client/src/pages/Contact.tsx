@@ -6,6 +6,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import GoogleMap from "@/components/GoogleMap";
+import ContactForm from "@/components/ContactForm";
 import { motion } from "framer-motion";
 import { Phone, Mail, MapPin, Clock, MessageSquare } from "lucide-react";
 
@@ -201,6 +202,27 @@ export default function Contact() {
               </motion.div>
             </motion.div>
           </div>
+        </div>
+      </section>
+
+      {/* Contact Form */}
+      <section className="py-20 lg:py-28 bg-gradient-to-b from-blue-50/50 to-white">
+        <div className="container">
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="mb-12"
+          >
+            <h2 className="font-display font-bold text-[#0D0D0D] text-4xl mb-4 text-center">
+              Send Us a Message
+            </h2>
+            <p className="font-body text-lg text-[#0D0D0D]/60 max-w-2xl mx-auto text-center">
+              Have questions about our services? Fill out the form below and we'll get back to you as soon as possible.
+            </p>
+          </motion.div>
+          <ContactForm />
         </div>
       </section>
 

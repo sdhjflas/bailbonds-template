@@ -11,8 +11,8 @@ import HowItWorks from "./pages/HowItWorks";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 
-
 function Router() {
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />

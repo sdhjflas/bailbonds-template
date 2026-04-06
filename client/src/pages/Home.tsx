@@ -8,6 +8,7 @@ import Footer from "@/components/Footer";
 import GoogleMap from "@/components/GoogleMap";
 import { motion } from "framer-motion";
 import { ArrowRight, Zap, Shield, Clock, CheckCircle2, Star } from "lucide-react";
+import { useAuth } from "@/_core/hooks/useAuth";
 
 const HERO_IMG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663521884016/8pyMy429fFWbVGQ5BPDWMT/hero-main-6R2gXDNyxvdQEm2WsQNbe9.webp";
 
@@ -57,6 +58,10 @@ const testimonials = [
 ];
 
 export default function Home() {
+  // The userAuth hooks provides authentication state
+  // To implement login/logout functionality, simply call logout() or redirect to getLoginUrl()
+  let { user, loading, error, isAuthenticated, logout } = useAuth();
+
   return (
     <div className="min-h-screen bg-white">
       <Navbar />
