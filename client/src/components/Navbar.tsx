@@ -35,7 +35,7 @@ export default function Navbar() {
         className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
             ? "bg-white/95 backdrop-blur-xl border-b border-blue-200/20 shadow-sm"
-            : "bg-transparent"
+            : "bg-white/80 backdrop-blur-md border-b border-blue-200/10"
         }`}
       >
         <div className="container flex items-center justify-between h-16 lg:h-20">
@@ -44,11 +44,7 @@ export default function Navbar() {
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
               <span className="text-white font-display font-bold text-sm">B</span>
             </div>
-            <span
-              className={`font-display font-bold text-lg tracking-tight transition-colors duration-300 ${
-                scrolled ? "text-[#0D0D0D]" : "text-white"
-              }`}
-            >
+            <span className="font-display font-bold text-lg tracking-tight text-[#0D0D0D]">
               Bail America
             </span>
           </a>
@@ -59,15 +55,11 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-                className={`px-3 py-2 font-body text-sm font-medium transition-all duration-200 rounded-lg ${
-                  isActive(link.href)
-                    ? scrolled
-                      ? "bg-blue-100 text-blue-600"
-                      : "bg-white/15 text-white"
-                    : scrolled
-                    ? "text-[#0D0D0D]/70 hover:text-[#0D0D0D] hover:bg-[#0D0D0D]/5"
-                    : "text-white/70 hover:text-white hover:bg-white/10"
-                }`}
+            className={`px-3 py-2 font-body text-sm font-medium transition-all duration-200 rounded-lg ${
+              isActive(link.href)
+                ? "bg-blue-100 text-blue-600"
+                : "text-[#0D0D0D]/70 hover:text-[#0D0D0D] hover:bg-[#0D0D0D]/5"
+            }`}
               >
                 {link.label}
               </a>
@@ -78,9 +70,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-3">
             <a
               href="tel:+19363341110"
-              className={`flex items-center gap-2 font-body text-sm font-semibold transition-colors ${
-                scrolled ? "text-blue-600 hover:text-blue-700" : "text-white hover:text-blue-100"
-              }`}
+            className="flex items-center gap-2 font-body text-sm font-semibold transition-colors text-blue-600 hover:text-blue-700"
             >
               <Phone size={15} strokeWidth={2.5} />
               (936) 334-1110
@@ -89,9 +79,7 @@ export default function Navbar() {
 
           {/* Mobile menu toggle */}
           <button
-            className={`lg:hidden p-2 rounded-lg transition-colors ${
-              scrolled ? "text-[#0D0D0D]" : "text-white"
-            }`}
+        className="lg:hidden p-2 rounded-lg transition-colors text-[#0D0D0D]"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
