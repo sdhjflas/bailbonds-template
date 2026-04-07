@@ -13,8 +13,8 @@ interface GoogleMapProps {
 }
 
 export default function GoogleMap({
-  latitude = 30.7461,
-  longitude = -94.7273,
+  latitude = 30.0667,
+  longitude = -94.7667,
   title = "Bail America Liberty",
   zoom = 14,
 }: GoogleMapProps) {
