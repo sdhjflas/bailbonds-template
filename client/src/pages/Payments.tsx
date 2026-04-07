@@ -6,12 +6,14 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { motion } from "framer-motion";
-import { CreditCard, DollarSign, Smartphone, Building2, CheckCircle2, Calculator } from "lucide-react";
+import { CreditCard, DollarSign, Smartphone, Building2, CheckCircle2, Calculator, ArrowRight } from "lucide-react";
 import { useState } from "react";
+import { toast } from "sonner";
 
 export default function Payments() {
   const [bondAmount, setBondAmount] = useState(5000);
   const [selectedPlan, setSelectedPlan] = useState("standard");
+  const [selectedPaymentMethod, setSelectedPaymentMethod] = useState<string | null>(null);
 
   // Calculate payment based on bond amount and plan
   const calculatePayment = () => {
@@ -20,6 +22,20 @@ export default function Payments() {
   };
 
   const paymentAmount = calculatePayment();
+
+  const handlePaymentMethodClick = (method: string) => {
+    setSelectedPaymentMethod(method);
+    const amount = paymentAmount.toLocaleString("en-US", { minimumFractionDigits: 2 });
+    
+    const messages: Record<string, string> = {
+      "Credit/Debit Card": `Processing card payment of $${amount}. Redirecting to secure checkout...`,
+      "Mobile Payment": `Processing mobile payment of $${amount}. Opening payment gateway...`,
+      "Bank Transfer": `Bank transfer initiated for $${amount}. Please check your email for transfer details.`,
+      "Cash Payment": `Cash payment selected. Please visit our office at 2317 Beaumont Ave, Liberty, TX 77575`,
+    };
+    
+    toast.success(messages[method] || "Payment method selected");
+  };
 
   const paymentMethods = [
     {
@@ -116,27 +132,40 @@ export default function Payments() {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {paymentMethods.map((method, i) => {
               const Icon = method.icon;
+              const isSelected = selectedPaymentMethod === method.title;
               return (
-                <motion.div
+                <motion.button
                   key={method.title}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="p-6 rounded-2xl bg-gradient-to-br from-blue-50 to-blue-100/50 border border-blue-200/50 text-center"
+                  onClick={() => handlePaymentMethodClick(method.title)}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  className={`p-6 rounded-2xl text-center transition-all duration-300 cursor-pointer border-2 ${
+                    isSelected
+                      ? "bg-blue-50 border-blue-600 shadow-lg"
+                      : "bg-gradient-to-br from-blue-50 to-blue-100/50 border-blue-200/50 hover:border-blue-300"
+                  }`}
                 >
-                  <Icon size={32} className="text-blue-600 mx-auto mb-4" />
+                  <Icon size={32} className={`mx-auto mb-4 ${isSelected ? "text-blue-600" : "text-blue-500"}`} />
                   <h3 className="font-display font-bold text-[#0D0D0D] text-lg mb-2">
                     {method.title}
                   </h3>
-                  <p className="font-body text-sm text-[#0D0D0D]/60">{method.desc}</p>
+                  <p className="font-body text-sm text-[#0D0D0D]/60 mb-4">{method.desc}</p>
                   {method.available && (
-                    <div className="mt-4 flex items-center justify-center gap-1 text-green-600">
+                    <div className="flex items-center justify-center gap-1 text-green-600">
                       <CheckCircle2 size={16} />
                       <span className="font-body text-xs font-semibold">Available</span>
                     </div>
                   )}
-                </motion.div>
+                  {isSelected && (
+                    <div className="mt-4 pt-4 border-t border-blue-200">
+                      <span className="font-body text-xs font-semibold text-blue-600">✓ Selected</span>
+                    </div>
+                  )}
+                </motion.button>
               );
             })}
           </div>
@@ -163,14 +192,16 @@ export default function Payments() {
 
           <div className="grid md:grid-cols-3 gap-8">
             {paymentPlans.map((plan, i) => (
-              <motion.div
+              <motion.button
                 key={plan.id}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
                 onClick={() => setSelectedPlan(plan.id)}
-                className={`p-8 rounded-2xl border-2 cursor-pointer transition-all duration-300 ${
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className={`p-8 rounded-2xl border-2 cursor-pointer transition-all duration-300 text-left w-full ${
                   selectedPlan === plan.id
                     ? "bg-blue-50 border-blue-600 shadow-lg"
                     : "bg-white border-blue-200/50 hover:border-blue-300"
@@ -202,7 +233,7 @@ export default function Payments() {
                     </p>
                   </div>
                 )}
-              </motion.div>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -264,7 +295,7 @@ export default function Payments() {
               </div>
 
               {/* Calculation Result */}
-              <div className="p-6 bg-white rounded-lg border-2 border-blue-600">
+              <div className="p-6 bg-white rounded-lg border-2 border-blue-600 mb-8">
                 <p className="font-body text-sm text-[#0D0D0D]/60 mb-2">Estimated Bond Fee</p>
                 <div className="font-display font-bold text-4xl text-blue-600 mb-4">
                   ${paymentAmount.toLocaleString("en-US", { minimumFractionDigits: 2 })}
@@ -274,15 +305,57 @@ export default function Payments() {
                 </p>
               </div>
 
-              {/* CTA Button */}
-              <motion.a
-                href="tel:+19363341110"
+              {/* Payment Method Selection */}
+              <div className="mb-8">
+                <p className="font-body font-semibold text-[#0D0D0D] mb-4">Select Payment Method:</p>
+                <div className="grid grid-cols-2 gap-3">
+                  {paymentMethods.map((method) => (
+                    <motion.button
+                      key={method.title}
+                      onClick={() => handlePaymentMethodClick(method.title)}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                      className={`p-3 rounded-lg font-body text-sm font-semibold transition-all duration-200 border-2 ${
+                        selectedPaymentMethod === method.title
+                          ? "bg-blue-600 text-white border-blue-600"
+                          : "bg-white text-[#0D0D0D] border-blue-200 hover:border-blue-300"
+                      }`}
+                    >
+                      {method.title}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Proceed Button */}
+              <motion.button
+                onClick={() => {
+                  if (selectedPaymentMethod) {
+                    handlePaymentMethodClick(selectedPaymentMethod);
+                  } else {
+                    toast.error("Please select a payment method");
+                  }
+                }}
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
-                className="mt-8 block w-full px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white font-body font-semibold rounded-lg transition-colors text-center"
+                className="w-full px-6 py-4 bg-blue-600 hover:bg-blue-700 text-white font-body font-semibold rounded-lg transition-colors flex items-center justify-center gap-2"
               >
-                Call (936) 334-1110 to Proceed with Payment
-              </motion.a>
+                Proceed with Payment
+                <ArrowRight size={18} />
+              </motion.button>
+
+              {/* Alternative CTA */}
+              <div className="mt-6 pt-6 border-t border-blue-200 text-center">
+                <p className="font-body text-sm text-[#0D0D0D]/60 mb-3">Prefer to call?</p>
+                <motion.a
+                  href="tel:+19363341110"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
+                  className="inline-flex items-center gap-2 px-6 py-3 bg-white border-2 border-blue-600 text-blue-600 font-body font-semibold rounded-lg hover:bg-blue-50 transition-colors"
+                >
+                  Call (936) 334-1110
+                </motion.a>
+              </div>
             </motion.div>
           </motion.div>
         </div>
