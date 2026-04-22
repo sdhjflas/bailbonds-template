@@ -1,4 +1,2 @@
-import { createTRPCReact } from "@trpc/react-query";
-import type { AppRouter } from "../../../server/routers";
-
-export const trpc = createTRPCReact<AppRouter>();
+// tRPC stub — not used in this static template
+export const trpc = {} as any;

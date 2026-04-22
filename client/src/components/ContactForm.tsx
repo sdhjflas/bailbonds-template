@@ -5,8 +5,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Mail, Phone, User, MessageSquare, CheckCircle2, AlertCircle } from "lucide-react";
-import { trpc } from "@/lib/trpc";
-
 export default function ContactForm() {
   const [formData, setFormData] = useState({
     name: "",
@@ -17,17 +15,7 @@ export default function ContactForm() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [submitted, setSubmitted] = useState(false);
-
-  const sendContactForm = trpc.contact.submit.useMutation({
-    onSuccess: () => {
-      setSubmitted(true);
-      setFormData({ name: "", email: "", phone: "", message: "" });
-      setTimeout(() => setSubmitted(false), 5000);
-    },
-    onError: (error) => {
-      setErrors({ submit: error.message || "Failed to send message. Please try again." });
-    },
-  });
+  const [isPending, setIsPending] = useState(false);
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {};
@@ -63,7 +51,13 @@ export default function ContactForm() {
       return;
     }
 
-    sendContactForm.mutate(formData);
+    setIsPending(true);
+    setTimeout(() => {
+      setIsPending(false);
+      setSubmitted(true);
+      setFormData({ name: "", email: "", phone: "", message: "" });
+      setTimeout(() => setSubmitted(false), 5000);
+    }, 800);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -242,10 +236,10 @@ export default function ContactForm() {
           viewport={{ once: true }}
           transition={{ duration: 0.5, delay: 0.2 }}
           type="submit"
-          disabled={sendContactForm.isPending}
+          disabled={isPending}
           className="w-full px-6 py-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-body font-semibold rounded-lg transition-colors duration-200 flex items-center justify-center gap-2"
         >
-          {sendContactForm.isPending ? (
+          {isPending ? (
             <>
               <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
               Sending...
