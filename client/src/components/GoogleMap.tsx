@@ -10,6 +10,7 @@ interface GoogleMapProps {
   longitude?: number;
   title?: string;
   zoom?: number;
+  query?: string; // address string — uses embed iframe instead of Leaflet
 }
 
 export default function GoogleMap({
@@ -17,7 +18,21 @@ export default function GoogleMap({
   longitude = -94.7667,
   title = "Bail America Liberty",
   zoom = 14,
+  query,
 }: GoogleMapProps) {
+  // If an address query is provided, use a simple OpenStreetMap embed iframe
+  if (query) {
+    const src = `https://www.openstreetmap.org/export/embed.html?bbox=-180,-90,180,90&layer=mapnik&marker=${encodeURIComponent(query)}&query=${encodeURIComponent(query)}`;
+    return (
+      <iframe
+        title="Location map"
+        src={`https://maps.google.com/maps?q=${encodeURIComponent(query.replace(/\+/g, " "))}&output=embed`}
+        className="w-full h-full border-0"
+        loading="lazy"
+        referrerPolicy="no-referrer-when-downgrade"
+      />
+    );
+  }
   const mapContainer = useRef<HTMLDivElement>(null);
   const mapInstance = useRef<any>(null);
 

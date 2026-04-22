@@ -1,17 +1,24 @@
-/*
- * DESIGN: Velocity Minimalism — Navbar
- * Sticky, minimal, with multi-page navigation
- * Customized for Bail America Liberty
- */
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Phone, Menu, X } from "lucide-react";
 import { useLocation } from "wouter";
+import { useBusiness } from "@/contexts/BusinessContext";
+
+const DEFAULT_NAME = "Bail America";
+const DEFAULT_PHONE = "(936) 334-1110";
+const DEFAULT_PHONE_HREF = "tel:+19363341110";
+const DEFAULT_INITIAL = "B";
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [location] = useLocation();
+  const { data } = useBusiness();
+
+  const name = data?.business.name ?? DEFAULT_NAME;
+  const phone = data?.business.phone ?? DEFAULT_PHONE;
+  const phoneHref = phone ? `tel:${phone.replace(/\D/g, "")}` : DEFAULT_PHONE_HREF;
+  const initial = name.charAt(0).toUpperCase() || DEFAULT_INITIAL;
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -44,10 +51,10 @@ export default function Navbar() {
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 group">
             <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
-              <span className="text-white font-display font-bold text-sm">B</span>
+              <span className="text-white font-display font-bold text-sm">{initial}</span>
             </div>
             <span className="font-display font-bold text-lg tracking-tight text-[#0D0D0D]">
-              Bail America
+              {name}
             </span>
           </a>
 
@@ -57,11 +64,11 @@ export default function Navbar() {
               <a
                 key={link.label}
                 href={link.href}
-            className={`px-3 py-2 font-body text-sm font-medium transition-all duration-200 rounded-lg ${
-              isActive(link.href)
-                ? "bg-blue-100 text-blue-600"
-                : "text-[#0D0D0D]/70 hover:text-[#0D0D0D] hover:bg-[#0D0D0D]/5"
-            }`}
+                className={`px-3 py-2 font-body text-sm font-medium transition-all duration-200 rounded-lg ${
+                  isActive(link.href)
+                    ? "bg-blue-100 text-blue-600"
+                    : "text-[#0D0D0D]/70 hover:text-[#0D0D0D] hover:bg-[#0D0D0D]/5"
+                }`}
               >
                 {link.label}
               </a>
@@ -71,17 +78,17 @@ export default function Navbar() {
           {/* CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <a
-              href="tel:+19363341110"
-            className="flex items-center gap-2 font-body text-sm font-semibold transition-colors text-blue-600 hover:text-blue-700"
+              href={phoneHref}
+              className="flex items-center gap-2 font-body text-sm font-semibold transition-colors text-blue-600 hover:text-blue-700"
             >
               <Phone size={15} strokeWidth={2.5} />
-              (936) 334-1110
+              {phone}
             </a>
           </div>
 
           {/* Mobile menu toggle */}
           <button
-        className="lg:hidden p-2 rounded-lg transition-colors text-[#0D0D0D]"
+            className="lg:hidden p-2 rounded-lg transition-colors text-[#0D0D0D]"
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -117,11 +124,11 @@ export default function Navbar() {
               ))}
               <div className="pt-2 border-t border-blue-200/20 mt-2">
                 <a
-                  href="tel:+19363341110"
+                  href={phoneHref}
                   className="flex items-center justify-center gap-2 w-full py-3 bg-blue-600 text-white font-body text-sm font-semibold rounded-lg"
                 >
                   <Phone size={15} strokeWidth={2} />
-                  Call (936) 334-1110
+                  Call {phone}
                 </a>
               </div>
             </div>

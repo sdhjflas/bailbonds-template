@@ -1,12 +1,29 @@
-/*
- * DESIGN: Velocity Minimalism — Footer
- * Dark background, clean grid layout, cobalt accent links
- * Customized for Bail America Liberty
- */
 import { Phone, Mail, MapPin, Shield } from "lucide-react";
+import { useBusiness } from "@/contexts/BusinessContext";
+
+const DEFAULT = {
+  name: "Bail America Liberty",
+  phone: "(936) 334-1110",
+  phoneHref: "tel:+19363341110",
+  email: "bamerica_lib@yahoo.com",
+  address: "2317 Beaumont Ave, Liberty, TX 77575",
+  services: ["Felony Bonds", "Misdemeanor Bonds", "Traffic Bonds", "Mobile Bonds", "Surety Bonds", "Appearance Bonds"],
+};
 
 export default function Footer() {
   const year = new Date().getFullYear();
+  const { data } = useBusiness();
+
+  const name = data?.business.name ?? DEFAULT.name;
+  const phone = data?.business.phone ?? DEFAULT.phone;
+  const phoneHref = phone ? `tel:${phone.replace(/\D/g, "")}` : DEFAULT.phoneHref;
+  const email = data?.business.email ?? DEFAULT.email;
+  const city = data?.business.city;
+  const state = data?.business.state;
+  const address = data?.business.address;
+  const fullAddress = address && city ? `${address}, ${city}, ${state}` : city ? `${city}, ${state}` : DEFAULT.address;
+  const services = data?.services ?? DEFAULT.services;
+  const initial = name.charAt(0).toUpperCase();
 
   return (
     <footer className="bg-[#0A0A0F] text-white">
@@ -16,14 +33,12 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <div className="flex items-center gap-2 mb-4">
               <div className="w-8 h-8 rounded-lg bg-[#1A56DB] flex items-center justify-center">
-                <span className="text-white font-display font-bold text-sm">B</span>
+                <span className="text-white font-display font-bold text-sm">{initial}</span>
               </div>
-              <span className="font-display font-bold text-lg text-white">
-                Bail America <span className="text-[#3B82F6]">Liberty</span>
-              </span>
+              <span className="font-display font-bold text-lg text-white">{name}</span>
             </div>
             <p className="font-body text-sm text-white/45 leading-relaxed mb-5">
-              Licensed bail bondsmen serving Liberty County with fast, affordable bail bonds 24 hours a day, 365 days a year.
+              Licensed bail bondsmen serving {city ?? "your area"} with fast, affordable bail bonds 24 hours a day, 365 days a year.
             </p>
             <div className="flex items-center gap-2">
               <Shield size={13} className="text-[#3B82F6]" />
@@ -33,25 +48,11 @@ export default function Footer() {
 
           {/* Services */}
           <div>
-            <h4 className="font-body font-semibold text-white text-sm uppercase tracking-widest mb-4">
-              Services
-            </h4>
+            <h4 className="font-body font-semibold text-white text-sm uppercase tracking-widest mb-4">Services</h4>
             <ul className="space-y-2.5">
-              {[
-                "Felony Bonds",
-                "Misdemeanor Bonds",
-                "Traffic Bonds",
-                "Mobile Bonds",
-                "Surety Bonds",
-                "Appearance Bonds",
-              ].map((item) => (
+              {services.slice(0, 6).map((item) => (
                 <li key={item}>
-                  <a
-                    href="/services"
-                    className="font-body text-sm text-white/45 hover:text-white transition-colors"
-                  >
-                    {item}
-                  </a>
+                  <span className="font-body text-sm text-white/45">{item}</span>
                 </li>
               ))}
             </ul>
@@ -59,9 +60,7 @@ export default function Footer() {
 
           {/* Company */}
           <div>
-            <h4 className="font-body font-semibold text-white text-sm uppercase tracking-widest mb-4">
-              Company
-            </h4>
+            <h4 className="font-body font-semibold text-white text-sm uppercase tracking-widest mb-4">Company</h4>
             <ul className="space-y-2.5">
               {[
                 { label: "About Us", href: "/about" },
@@ -72,10 +71,7 @@ export default function Footer() {
                 { label: "Terms of Service", href: "#" },
               ].map((item) => (
                 <li key={item.label}>
-                  <a
-                    href={item.href}
-                    className="font-body text-sm text-white/45 hover:text-white transition-colors"
-                  >
+                  <a href={item.href} className="font-body text-sm text-white/45 hover:text-white transition-colors">
                     {item.label}
                   </a>
                 </li>
@@ -85,47 +81,36 @@ export default function Footer() {
 
           {/* Contact */}
           <div>
-            <h4 className="font-body font-semibold text-white text-sm uppercase tracking-widest mb-4">
-              Contact
-            </h4>
+            <h4 className="font-body font-semibold text-white text-sm uppercase tracking-widest mb-4">Contact</h4>
             <ul className="space-y-4">
-              <li>
-                <a
-                  href="tel:+19363341110"
-                  className="flex items-start gap-3 group"
-                >
-                  <Phone size={14} className="text-[#3B82F6] mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="font-body text-xs text-white/35 uppercase tracking-wider mb-0.5">Phone</p>
-                    <p className="font-body text-sm text-white/70 group-hover:text-white transition-colors">
-                      (936) 334-1110
-                    </p>
-                  </div>
-                </a>
-              </li>
-              <li>
-                <a
-                  href="mailto:bamerica_lib@yahoo.com"
-                  className="flex items-start gap-3 group"
-                >
-                  <Mail size={14} className="text-[#3B82F6] mt-0.5 flex-shrink-0" />
-                  <div>
-                    <p className="font-body text-xs text-white/35 uppercase tracking-wider mb-0.5">Email</p>
-                    <p className="font-body text-sm text-white/70 group-hover:text-white transition-colors">
-                      bamerica_lib@yahoo.com
-                    </p>
-                  </div>
-                </a>
-              </li>
+              {phone && (
+                <li>
+                  <a href={phoneHref} className="flex items-start gap-3 group">
+                    <Phone size={14} className="text-[#3B82F6] mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-body text-xs text-white/35 uppercase tracking-wider mb-0.5">Phone</p>
+                      <p className="font-body text-sm text-white/70 group-hover:text-white transition-colors">{phone}</p>
+                    </div>
+                  </a>
+                </li>
+              )}
+              {email && (
+                <li>
+                  <a href={`mailto:${email}`} className="flex items-start gap-3 group">
+                    <Mail size={14} className="text-[#3B82F6] mt-0.5 flex-shrink-0" />
+                    <div>
+                      <p className="font-body text-xs text-white/35 uppercase tracking-wider mb-0.5">Email</p>
+                      <p className="font-body text-sm text-white/70 group-hover:text-white transition-colors">{email}</p>
+                    </div>
+                  </a>
+                </li>
+              )}
               <li>
                 <div className="flex items-start gap-3">
                   <MapPin size={14} className="text-[#3B82F6] mt-0.5 flex-shrink-0" />
                   <div>
                     <p className="font-body text-xs text-white/35 uppercase tracking-wider mb-0.5">Office</p>
-                    <p className="font-body text-sm text-white/70">
-                      2317 Beaumont Ave<br />
-                      Liberty, TX 77575
-                    </p>
+                    <p className="font-body text-sm text-white/70">{fullAddress}</p>
                   </div>
                 </div>
               </li>
@@ -136,7 +121,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="font-body text-xs text-white/30">
-            © {year} Bail America Liberty. All rights reserved. License #BL001.
+            © {year} {name}. All rights reserved.
           </p>
           <p className="font-body text-xs text-white/20">
             Not legal advice. For informational purposes only.

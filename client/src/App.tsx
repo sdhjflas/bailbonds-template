@@ -11,11 +11,13 @@ import HowItWorks from "./pages/HowItWorks";
 import Contact from "./pages/Contact";
 import FAQ from "./pages/FAQ";
 import Payments from "./pages/Payments";
+import Preview from "./pages/Preview";
 
 function Router() {
-  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
+      {/* Personalized preview routes — /p/:slug */}
+      <Route path={"/p/:slug"} component={Preview} />
       <Route path={"/"} component={Home} />
       <Route path={"/about"} component={About} />
       <Route path={"/services"} component={Services} />
@@ -24,7 +26,6 @@ function Router() {
       <Route path={"/faq"} component={FAQ} />
       <Route path={"/payments"} component={Payments} />
       <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
   );
