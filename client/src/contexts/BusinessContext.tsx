@@ -12,6 +12,9 @@ export interface BusinessData {
     state: string;
     rating: number;
     reviews: number;
+    tagline?: string;
+    about?: string;
+    hours?: string;
   };
   colors: {
     primary: string;
