@@ -16,8 +16,6 @@ import Preview from "./pages/Preview";
 function Router() {
   return (
     <Switch>
-      {/* Personalized preview routes — /p/:slug */}
-      <Route path={"/p/:slug"} component={Preview} />
       <Route path={"/"} component={Home} />
       <Route path={"/about"} component={About} />
       <Route path={"/services"} component={Services} />
@@ -26,6 +24,8 @@ function Router() {
       <Route path={"/faq"} component={FAQ} />
       <Route path={"/payments"} component={Payments} />
       <Route path={"/404"} component={NotFound} />
+      {/* Personalized preview — must be last to catch all slugs */}
+      <Route path={"/:slug"} component={Preview} />
       <Route component={NotFound} />
     </Switch>
   );
