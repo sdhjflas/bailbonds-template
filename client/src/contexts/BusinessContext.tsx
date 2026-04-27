@@ -43,7 +43,7 @@ export function useBusiness() {
   return useContext(BusinessContext);
 }
 
-const PREVIEW_API = import.meta.env.VITE_PREVIEW_DATA_URL || "";
+const PREVIEW_API = import.meta.env.VITE_PREVIEW_DATA_URL || "https://pub-f10a51263b444a4099652a6f3205e1e7.r2.dev/previews";
 
 export function BusinessProvider({ slug, children }: { slug: string; children: ReactNode }) {
   const [data, setData] = useState<BusinessData | null>(null);
